@@ -22,6 +22,7 @@
         display: none; /* hidden by default */
         opacity: 0.7;
         transition: width 0.3s, height 0.3s;
+        z-index: 10; /* ✅ Ensures it's above the image */
       }
     </style>
   </head>
@@ -34,32 +35,27 @@
     </div>
 
     <script>
-      // Simulated crowd count
-      const a = Math.floor(Math.random() * 10000) + 1;
+      // ✅ Wait until everything is loaded
+      window.onload = function () {
+        const a = Math.floor(Math.random() * 10000) + 1;
+        const dot = document.getElementById("dot");
 
-      // Get the dot element
-      const dot = document.getElementById("dot");
+        if (a > 5000) {
+          const x = Math.floor(Math.random() * (608 - 8 + 1)) + 8;
+          const y = Math.floor(Math.random() * (679 - 79 + 1)) + 79;
+          const size = 15 + ((a - 5000) / 5000) * 45;
 
-      if (a > 5000) {
-        // Random position (within the 800x700 map size)
-        const x = Math.floor(Math.random() * (608 - 8 + 1)) + 8;
-        const y = Math.floor(Math.random() * (679 - 79 + 1)) + 79;
+          dot.style.left = `${x}px`;
+          dot.style.top = `${y}px`;
+          dot.style.width = `${size}px`;
+          dot.style.height = `${size}px`;
+          dot.style.display = 'block';
 
-        // Calculate size (grow from 15px to 60px based on population)
-        const size = 15 + ((a - 5000) / 5000) * 45;
-
-        // Apply styles dynamically
-        dot.style.left = `${x}px`;
-        dot.style.top = `${y}px`;
-        dot.style.width = `${size}px`;
-        dot.style.height = `${size}px`;
-        dot.style.display = 'block';
-
-        console.log(`Population: ${a} → Dot at (${x}, ${y}), size: ${Math.round(size)}px`);
-      } else {
-        console.log(`Population: ${a} → Too low, dot hidden.`);
-      }
+          console.log(`Population: ${a} → Dot at (${x}, ${y}), size: ${Math.round(size)}px`);
+        } else {
+          console.log(`Population: ${a} → Too low, dot hidden.`);
+        }
+      };
     </script>
   </body>
 </html>
-
