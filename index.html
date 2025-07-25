@@ -1,18 +1,34 @@
-<!DOCTYPE HTML>
 <html>
   <head>
-    <title>
-      Stamp the Stampede
-    </title>
-    <!--Favicon code!-->
+    <title>Stamp the Stampede</title>
+    <style>
+      .image-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      .red-dot {
+        position: absolute;
+        top: 100px; /* Change as per the required location */
+        left: 200px; /* Change as per the required location */
+        width: 15px;
+        height: 15px;
+        background-color: red;
+        border-radius: 50%;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+      }
+    </style>
   </head>
   <body>
-    <h1>
-      Crowd Density Map - Karnataka 
-    </h1>
-    <img src="g  e  s.png" alt="Karnataka Map.png" width="800">
+    <h1>Crowd Density Map - Karnataka</h1>
+    
+    <div class="image-container">
+      <img src="g  e  s.png" alt="Karnataka Map.png" width="800">
+      <div class="red-dot"></div>
+    </div>
   </body>
-</html>  
+</html>
+  
     
 
 
