@@ -17,6 +17,8 @@
       display: inline-block;
       max-width: 80%;
       text-align: left;
+      overflow-y: auto;
+      max-height: 500px;
     }
     .message-item {
       font-size: 20px;
@@ -66,19 +68,21 @@
     const last50 = query(messagesRef, limitToLast(50));
 
     const list = document.getElementById("messageList");
-    list.innerHTML = ""; // Clear the loading text
+    list.innerHTML = ""; // Clear loading message
 
     onChildAdded(last50, (snapshot) => {
       const data = snapshot.val();
-      const msg = data?.text || "(No message)";
+
+      // Handle both structured objects and plain strings
+      const msg = typeof data === "string" ? data : (data?.text || "(No message)");
       const time = data?.timestamp ? new Date(data.timestamp).toLocaleString() : "unknown time";
 
       const msgElement = document.createElement("div");
       msgElement.className = "message-item";
-      msgElement.textContent = `🕒 ${time} → ${msg}`;
+      msgElement.textContent = `🔔 ${time} → ${msg}`;
       list.appendChild(msgElement);
 
-      // Optional: Auto-scroll to latest
+      // Scroll to bottom
       list.scrollTop = list.scrollHeight;
     });
   </script>
