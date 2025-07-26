@@ -1,61 +1,89 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Crowd Density Map - Karnataka</title>
-    <style>
-      body {
-        font-family: sans-serif;
-      }
+<head>
+  <title>Crowd Density Map - Karnataka</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
 
-      .image-container {
-        position: relative;
-        display: inline-block;
-      }
+    .image-container {
+      position: relative;
+      display: inline-block;
+    }
 
-      .red-dot {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        background-color: red;
-        border-radius: 50%;
-        box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
-        display: none; /* hidden by default */
-        opacity: 0.7;
-        transition: width 0.3s, height 0.3s;
-        z-index: 10; /* ✅ Ensures it's above the image */
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Crowd Density Map - Karnataka</h1>
+    .dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+      display: none;
+      opacity: 0.8;
+      transition: width 0.3s, height 0.3s, background-color 0.3s;
+      z-index: 10;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Crowd Density Map - Karnataka</h1>
 
-    <div class="image-container">
-      <img src="g  e  s.png" alt="Karnataka Map" width="800">
-      <div class="red-dot" id="dot"></div>
-    </div>
+  <div class="image-container">
+    <img src="g  e  s.png" alt="Karnataka Map" width="800" />
+    <div class="dot" id="dot"></div>
+  </div>
 
-    <script>
-      // ✅ Wait until everything is loaded
-      window.onload = function () {
-        const a = Math.floor(Math.random() * 10000) + 1;
-        const dot = document.getElementById("dot");
-
-        if (a > 5000) {
-          const x = Math.floor(Math.random() * (608 - 8 + 1)) + 8;
-          const y = Math.floor(Math.random() * (679 - 79 + 1)) + 79;
-          const size = 15 + ((a - 5000) / 5000) * 45;
-
-          dot.style.left = `${x}px`;
-          dot.style.top = `${y}px`;
-          dot.style.width = `${size}px`;
-          dot.style.height = `${size}px`;
-          dot.style.display = 'block';
-
-          console.log(`Population: ${a} → Dot at (${x}, ${y}), size: ${Math.round(size)}px`);
-        } else {
-          console.log(`Population: ${a} → Too low, dot hidden.`);
-        }
+  <script>
+    window.onload = function () {
+      const karnatakaCities = {
+        Bengaluru: { x: 420, y: 520 },
+        Hubballi: { x: 250, y: 380 },
+        Mangaluru: { x: 180, y: 600 },
+        Mysuru: { x: 350, y: 600 },
+        Davangere: { x: 320, y: 450 },
+        Belagavi: { x: 180, y: 320 },
+        Ballari: { x: 580, y: 480 },
+        Gulbarga: { x: 520, y: 320 },
+        Shimoga: { x: 280, y: 520 },
+        Hassan: { x: 320, y: 560 }
       };
-    </script>
-  </body>
+
+      // Simulated population between 1 and 20000
+      const population = Math.floor(Math.random() * 20000) + 1;
+      const dot = document.getElementById("dot");
+
+      if (population > 5000) {
+        const cities = Object.keys(karnatakaCities);
+        const randomCity = cities[Math.floor(Math.random() * cities.length)];
+        const pos = karnatakaCities[randomCity];
+
+        // Size grows from 10px at 5k to 50px at 20k population
+        const size = 10 + ((population - 5000) / 15000) * 40;
+
+        // Color based on population
+        let color;
+        if (population > 15000) {
+          color = 'red';
+        } else if (population > 10000) {
+          color = 'orange';
+        } else {
+          color = 'yellow';
+        }
+
+        dot.style.left = `${pos.x}px`;
+        dot.style.top = `${pos.y}px`;
+        dot.style.width = `${size}px`;
+        dot.style.height = `${size}px`;
+        dot.style.backgroundColor = color;
+        dot.style.display = "block";
+
+        console.log(`Population: ${population} → Dot on ${randomCity} at (${pos.x},${pos.y}), size: ${Math.round(size)}px, color: ${color}`);
+      } else {
+        console.log(`Population: ${population} → Too low, dot hidden.`);
+        dot.style.display = "none";
+      }
+    };
+  </script>
+</body>
 </html>
