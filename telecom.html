@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <title>Telecom Simulator</title>
@@ -34,6 +35,19 @@
       background-color: white;
       margin: 30px 0;
     }
+
+    textarea {
+      display: block;
+      margin: 0 auto;
+      resize: vertical;
+    }
+
+    #sendBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -42,14 +56,55 @@
 
   <!-- Image Row -->
   <div class="image-row">
-    <img src="vi.png" alt="Image 1">
-    <img src="bsnl.png" alt="Image 2">
-    <img src="airtel.png" alt="Image 3">
-    <img src="jio.png" alt="Image 4">
+    <img src="vi.png" alt="VI">
+    <img src="bsnl.png" alt="BSNL">
+    <img src="airtel.png" alt="Airtel">
+    <img src="jio.png" alt="Jio">
   </div>
 
   <hr>
 
+  <!-- Message Input -->
+  <textarea id="messageBox" rows="10" cols="80" placeholder="Enter your message here..."></textarea>
+  <input type="button" id="sendBtn" value="Send">
+
+  <!-- Firebase Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC04tCHgI7AI5RMqqR_qNiqjfCVPe_Ti-4",
+      authDomain: "stampthestampede.firebaseapp.com",
+      projectId: "stampthestampede",
+      storageBucket: "stampthestampede.firebasestorage.app",
+      messagingSenderId: "686412721641",
+      appId: "1:686412721641:web:9ee7ed10dfd7f792016f78",
+      measurementId: "G-RX7MFV8FT1",
+      databaseURL: "https://stampthestampede-default-rtdb.firebaseio.com"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    document.getElementById("sendBtn").addEventListener("click", () => {
+      const message = document.getElementById("messageBox").value.trim();
+      if (!message) {
+        alert("Please enter a message.");
+        return;
+      }
+
+      push(ref(db, "messages/"), {
+        text: message,
+        timestamp: new Date().toISOString()
+      }).then(() => {
+        alert("Message sent!");
+        document.getElementById("messageBox").value = "";
+      }).catch((error) => {
+        console.error("Error:", error);
+        alert("Failed to send message.");
+      });
+    });
+  </script>
 </body>
 </html>
-
